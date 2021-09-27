@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -12,23 +15,46 @@ namespace Passwordless.Cosmos
     public static class WithBinding
     {
         [FunctionName(nameof(WithBinding))]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        public static async IAsyncEnumerable<User> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "GET")] 
+            HttpRequest req,
+            [CosmosDB(
+                databaseName: "Music",
+                containerName: "Users",
+                Connection = "FunctionsPlaygroundRepository"
+                )]
+            CosmosClient client,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
             string name = req.Query["name"];
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            var container = client.GetDatabase("Music").GetContainer("Users");
+            log.LogInformation($"Searching for: {name}");
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            QueryDefinition queryDefinition = new QueryDefinition(
+                    "SELECT * FROM items i WHERE CONTAINS(i.Firstname, @name)")
+                .WithParameter("@name", name);
 
-            return new OkObjectResult(responseMessage);
+            using var resultSet = container.GetItemQueryIterator<User>(queryDefinition);
+            while (resultSet.HasMoreResults)
+            {
+                var response = await resultSet.ReadNextAsync();
+                foreach (var user in response.Resource)
+                {
+                    yield return user;
+                }
+            }
         }
+    }
+
+    public class User
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("partitionKey")]
+        public string PartitionKey { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
     }
 }
