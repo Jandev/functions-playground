@@ -1,11 +1,3 @@
-# Project name
+# Azure Functions Playground
 
-What is this about
-
-# Set up
-
-This is what you need to do to run it yourself
-
-# Sample usage
-
-See what it does
+I'm testing out some features in this repository of stuff I want to try, or want to write about and need demo projects.
