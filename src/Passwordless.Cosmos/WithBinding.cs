@@ -28,6 +28,7 @@ namespace Passwordless.Cosmos
         {
             string name = req.Query["name"];
 
+            // Inspired by the docs: https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-input?tabs=csharp&WT.mc_id=AZ-MVP-5003246#http-trigger-get-multiple-docs-using-cosmosclient
             var container = client.GetDatabase("Music").GetContainer("Users");
             log.LogInformation($"Searching for: {name}");
 
