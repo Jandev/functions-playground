@@ -6,7 +6,7 @@ I'm testing out some features in this repository of stuff I want to try, or want
 
 ## Azure Functions
 
-The passwordless features are still new and requires an [Elastic Premium instance of Azure Functions at this time](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference?WT.mc_id=AZ-MVP-5007226#grant-permission-to-the-identity). You also need the [v4 library of the Cosmos DB extensions package](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.CosmosDB).
+The passwordless features are still new and requires an [Elastic Premium instance of Azure Functions at this time](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference?WT.mc_id=AZ-MVP-5007226&WT.mc_id=AZ-MVP-5003246#configure-an-identity-based-connection). You also need the [v4 library of the Cosmos DB extensions package](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.CosmosDB).
 
 The Functions App needs the Managed Identity set to `true` to use this passwordless feature. It's also possible to use a regular service principal, but I won't be using that over here.
 
@@ -34,6 +34,8 @@ This database contains the following collections:
 
 ### Assigning roles
 
+There are a couple of [new roles on the data plane](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference?WT.mc_id=AZ-MVP-5007226&WT.mc_id=AZ-MVP-5003246#grant-permission-to-the-identity) which can be assigned to your identity.
+
 At this moment in time there isn't any support to assign roles for the data plane in the Azure Portal. This has to be done via a script (PowerShell or Azure CLI), or via ARM template.
 
 The necessary script for the [Azure CLI looks like the following](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac?WT.mc_id=AZ-MVP-5007226#using-the-azure-cli-1).
@@ -41,11 +43,10 @@ The necessary script for the [Azure CLI looks like the following](https://docs.m
 ```powershell
 $resourceGroupName='<myResourceGroup>'
 $accountName='<myCosmosAccount>'
-# Found over here: https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac?WT.mc_id=AZ-MVP-5007226#built-in-role-definitions
 # Cosmos DB Built-in Data Reader: 00000000-0000-0000-0000-000000000001
 # Cosmos DB Built-in Data Contributor: 00000000-0000-0000-0000-000000000002
 $readOnlyRoleDefinitionId = '<roleDefinitionId>'
-$principalId = '<aadPrincipalId>'
+$principalId = '<aadPrincipalIdOfYourManagedIdentity>'
 az cosmosdb sql role assignment create --account-name $accountName --resource-group $resourceGroupName --scope "/" --principal-id $principalId --role-definition-id $readOnlyRoleDefinitionId
 ```
 
