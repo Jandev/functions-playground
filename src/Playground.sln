@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Passwordless.Cosmos", "Passwordless.Cosmos\Passwordless.Cosmos.csproj", "{B9D854DA-31D2-4EDB-AFDE-61F3ACAE7EEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Passwordless.Cosmos", "Passwordless.Cosmos\Passwordless.Cosmos.csproj", "{B9D854DA-31D2-4EDB-AFDE-61F3ACAE7EEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3C16CCA-C029-4E4C-AA49-C83BEC6DA183}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\passwordless-cosmos.yml = ..\.github\workflows\passwordless-cosmos.yml
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyVaultUsage", "KeyVaultUsage\KeyVaultUsage.csproj", "{3094E55A-EFAB-4813-B921-2AEDD9794312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B9D854DA-31D2-4EDB-AFDE-61F3ACAE7EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9D854DA-31D2-4EDB-AFDE-61F3ACAE7EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9D854DA-31D2-4EDB-AFDE-61F3ACAE7EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3094E55A-EFAB-4813-B921-2AEDD9794312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3094E55A-EFAB-4813-B921-2AEDD9794312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3094E55A-EFAB-4813-B921-2AEDD9794312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3094E55A-EFAB-4813-B921-2AEDD9794312}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
